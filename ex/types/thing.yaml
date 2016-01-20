@@ -1,0 +1,23 @@
+- name: testtype
+  short: this is a short description
+  long: this is a longer description
+  go_name: TestType
+
+#- name: database
+#  short: database config
+#  description: Database config stuffs
+#  params:
+#    - name: host
+#      description: Hostname of database
+#      type: string
+#      required: true
+#    - name: port
+#      description: Port of database
+#      type: string
+#      default: "3306"
+#    - name: max_conns
+#      type: int
+#      default: 2
+#    - name: max_idle_conns
+#      type: int
+#      default: 2
