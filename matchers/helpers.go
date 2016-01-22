@@ -2,6 +2,7 @@ package matchers
 
 import "reflect"
 
+// Ripped from gomega...they should export!
 func lengthOf(a interface{}) (int, bool) {
 	if a == nil {
 		return 0, false
