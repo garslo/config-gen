@@ -7,9 +7,9 @@ import (
 	"github.com/garslo/config-gen/config"
 )
 
-type StdoutEmitter struct{}
+type Stdout struct{}
 
-func (me StdoutEmitter) Emit(state config.State) error {
+func (me Stdout) Emit(state config.State) error {
 	log.Printf("%d %d", len(state.Types), len(state.Decls))
 	for _, t := range state.Types {
 		fmt.Printf("%#v\n", t)
