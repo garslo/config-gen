@@ -1,4 +1,4 @@
-package main
+package parsers
 
 import (
 	"io/ioutil"
@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/garslo/config-gen/config"
 	"gopkg.in/yaml.v2"
 )
 
@@ -15,8 +16,8 @@ func (me YamlFile) IsTypeFile() bool {
 	return strings.HasSuffix(filepath.Dir(string(me)), "types")
 }
 
-func (me YamlFile) AsTypes() ([]Type, error) {
-	t := []Type{}
+func (me YamlFile) AsTypes() ([]config.Type, error) {
+	t := []config.Type{}
 	err := me.unmarshal(&t)
 	return t, err
 }
@@ -29,8 +30,8 @@ func (me YamlFile) unmarshal(out interface{}) error {
 	return yaml.Unmarshal(data, out)
 }
 
-func (me YamlFile) AsDecls() ([]Decl, error) {
-	d := []Decl{}
+func (me YamlFile) AsDecls() ([]config.Decl, error) {
+	d := []config.Decl{}
 	err := me.unmarshal(&d)
 	return d, err
 }
@@ -39,8 +40,8 @@ type YamlParser struct {
 	Files []YamlFile
 }
 
-func (me YamlParser) Parse(root string) (ConfigState, error) {
-	state := ConfigState{}
+func (me YamlParser) Parse(root string) (config.State, error) {
+	state := config.State{}
 	if err := filepath.Walk(root, me.findYamlFiles); err != nil {
 		return state, err
 	}
@@ -50,7 +51,7 @@ func (me YamlParser) Parse(root string) (ConfigState, error) {
 			if err != nil {
 				return state, err
 			}
-			if err := state.AddTypes(ts); err != nil {
+			if err := state.AddTypes(ts...); err != nil {
 				return state, err
 			}
 		} else {
@@ -58,7 +59,7 @@ func (me YamlParser) Parse(root string) (ConfigState, error) {
 			if err != nil {
 				return state, err
 			}
-			state.AddDecls(ds)
+			state.AddDecls(ds...)
 		}
 	}
 	return state, nil

@@ -1,13 +1,15 @@
-package main
+package emitters
 
 import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/garslo/config-gen/config"
 )
 
 type JsonEmitter struct{}
 
-func (me JsonEmitter) Emit(state ConfigState) error {
+func (me JsonEmitter) Emit(state config.State) error {
 	data, err := json.MarshalIndent(state, "", "  ")
 	if err != nil {
 		return err
