@@ -36,11 +36,11 @@ func (me YamlFile) AsDecls() ([]config.Decl, error) {
 	return d, err
 }
 
-type YamlParser struct {
+type Yaml struct {
 	Files []YamlFile
 }
 
-func (me YamlParser) Parse(root string) (config.State, error) {
+func (me Yaml) Parse(root string) (config.State, error) {
 	state := config.State{}
 	if err := filepath.Walk(root, me.findYamlFiles); err != nil {
 		return state, err
@@ -65,7 +65,7 @@ func (me YamlParser) Parse(root string) (config.State, error) {
 	return state, nil
 }
 
-func (me *YamlParser) findYamlFiles(path string, fileInfo os.FileInfo, err error) error {
+func (me *Yaml) findYamlFiles(path string, fileInfo os.FileInfo, err error) error {
 	if err != nil {
 		return err
 	}

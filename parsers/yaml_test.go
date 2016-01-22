@@ -12,11 +12,11 @@ import (
 
 var _ = Describe("Yaml", func() {
 	var (
-		parser parsers.YamlParser
+		parser parsers.Yaml
 	)
 
 	BeforeEach(func() {
-		parser = parsers.YamlParser{}
+		parser = parsers.Yaml{}
 	})
 
 	Context("the files", func() {
