@@ -7,9 +7,9 @@ import (
 	"github.com/garslo/config-gen/config"
 )
 
-type JsonEmitter struct{}
+type Json struct{}
 
-func (me JsonEmitter) Emit(state config.State) error {
+func (me Json) Emit(state config.State) error {
 	data, err := json.MarshalIndent(state, "", "  ")
 	if err != nil {
 		return err
