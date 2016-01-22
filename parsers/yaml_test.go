@@ -74,10 +74,10 @@ var _ = Describe("Yaml", func() {
 				state, err := parser.Parse(root)
 				Expect(err).To(BeNil())
 				names, parsedTypes := NamesAndTypes(state.Types)
-				Expect(names).To(ConsistOf([]interface{}{"t1", "t2", "t3", "t4"}...))
+				Expect(names).To(ConsistOf("t1", "t2", "t3", "t4"))
 				// An artifact of the yaml parser.
 				parsedTypes = NillifyParamsIfEmpty(parsedTypes)
-				Expect(parsedTypes).To(BeEquivalentTo(types))
+				Expect(parsedTypes).To(ConsistOf(types))
 			})
 		})
 	})
