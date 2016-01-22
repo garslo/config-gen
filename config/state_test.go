@@ -89,6 +89,11 @@ var _ = Describe("State", func() {
 			It("should pass validation", func() {
 				Expect(state.Validate()).To(Succeed())
 			})
+
+			It("should pass validation with an empty state", func() {
+				state = State{}
+				Expect(state.Validate()).To(Succeed())
+			})
 		})
 
 		Context("invalid setup", func() {
