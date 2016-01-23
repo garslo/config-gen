@@ -12,6 +12,7 @@ type Param struct {
 	Type     string `yaml:"type"`
 	Required bool   `yaml:"required"`
 	Default  string `yaml:"default"`
+	GoName   string `yaml:"go_name"`
 }
 
 type Type struct {
@@ -76,12 +77,38 @@ func (me *State) AddDecls(ds ...Decl) {
 	me.Decls = append(me.Decls, ds...)
 }
 
+var builtins = [...]string{
+	"int",
+	"int32",
+	"int64",
+	"uint",
+	"uint32",
+	"uint64",
+	"float",
+	"float32",
+	"float64",
+	"bool",
+	"string",
+}
+
+func isBuiltin(t string) bool {
+	for _, builtin := range builtins {
+		if t == builtin {
+			return true
+		}
+	}
+	return false
+}
+
 func (me State) Validate() error {
 	for tName, t := range me.Types {
 		if err := t.Validate(); err != nil {
 			return fmt.Errorf("Invalid type '%s': %s", tName, err)
 		}
 		for _, param := range t.Params {
+			if isBuiltin(param.Type) {
+				continue
+			}
 			if _, ok := me.Types.Find(param.Type); !ok {
 				return fmt.Errorf("Invalid type: could not find type '%s' for type '%s.%s'", param.Type, tName, param.Name)
 			}
