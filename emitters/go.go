@@ -2,38 +2,35 @@ package emitters
 
 import (
 	"fmt"
-	"go/format"
-	"go/token"
 	"os"
 	"strings"
 
 	"github.com/garslo/config-gen/config"
+
+	g "github.com/garslo/gogen"
 )
 
 type Go struct{}
 
 func (me Go) Emit(state config.State) error {
-	file := File{
+	pkg := g.Package{
 		Name: "config",
 	}
 	for _, t := range state.Types {
-		fields := make([]Field, len(t.Params))
+		fields := make([]g.Field, len(t.Params))
 		for i, param := range t.Params {
-			fields[i] = Field{
-				Name: makeGoName(param.GoName, param.Name),
-				Type: typeName(state.Types, param.Type),
-				Tag:  fmt.Sprintf("`yaml:\"%s\"`", param.Name),
+			fields[i] = g.Field{
+				Name:     makeGoName(param.GoName, param.Name),
+				TypeName: typeName(state.Types, param.Type),
+				Tag:      fmt.Sprintf("`yaml:\"%s\"`", param.Name),
 			}
 		}
-		s := Struct{
+		pkg.Struct(g.Struct{
 			Name:   makeGoName(t.GoName, t.Name),
 			Fields: fields,
-		}
-		file.Structs = append(file.Structs, s)
+		})
 	}
-
-	fset := token.NewFileSet()
-	return format.Node(os.Stdout, fset, file.Ast())
+	return pkg.WriteTo(os.Stdout)
 }
 
 func typeName(types config.Types, name string) string {
