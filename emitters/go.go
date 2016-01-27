@@ -25,7 +25,7 @@ func (me Go) Emit(state config.State) error {
 				Tag:      fmt.Sprintf("`yaml:\"%s\"`", param.Name),
 			}
 		}
-		pkg.Struct(g.Struct{
+		pkg.Declare(g.Struct{
 			Name:   makeGoName(t.GoName, t.Name),
 			Fields: fields,
 		})
