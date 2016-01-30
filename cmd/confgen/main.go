@@ -18,7 +18,7 @@ func main() {
 	)
 	flag.StringVar(&root, "root", pwd, "location to search for yaml files")
 	flag.Parse()
-	dieIf(config.Transform(root, parsers.Yaml{}, emitters.Go{}))
+	dieIf(config.Transform(root, parsers.Yaml{}, emitters.Markdown{}))
 }
 
 func dieIf(err error) {
